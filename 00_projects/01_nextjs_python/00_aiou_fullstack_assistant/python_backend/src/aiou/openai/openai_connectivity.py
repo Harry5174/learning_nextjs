@@ -1,8 +1,13 @@
 from packaging import version
 import openai
 from dotenv import load_dotenv
+import os
 
 
+dotenv_path = os.path.join(os.path.dirname(__file__), '..', '..', '..', '.env')
+load_dotenv(dotenv_path)
+
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')  # Use getenv to avoid KeyError if variable is not set
 def version_check():
     # Check OpenAI version is correct
     required_version = version.parse("1.1.1")
