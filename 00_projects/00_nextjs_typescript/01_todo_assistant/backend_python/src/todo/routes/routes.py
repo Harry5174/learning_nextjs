@@ -33,15 +33,15 @@ origins = [
     "http://localhost:8000",
 ]
 
-from fastapi.middleware.cors import CORSMiddleware
+# from fastapi.middleware.cors import CORSMiddleware
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE"],
-    allow_headers=["*"],
-)
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=origins,
+#     allow_credentials=True,
+#     allow_methods=["GET", "POST", "PUT", "DELETE"],
+#     allow_headers=["*"],
+# )
 
 
 def get_db():
@@ -51,6 +51,9 @@ def get_db():
         finally:
             session.close()
 
+@app.get("/")
+def read_root():
+    return {"message": "This is root!!"}
 
 @app.get("/todos/")
 def read_todos(db: Session = Depends(get_db)):
