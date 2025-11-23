@@ -1,4 +1,4 @@
-import cloudinary from "cloudinary";
+import cloudinary from "@/lib/cloudinary";
 import AlbumGrid from "@/app/gallery/album-grid";
 import { SearchResult } from "@/app/gallery/page";
 import { ForceRefresh } from "@/components/force-refresh";
@@ -10,7 +10,7 @@ export default async function GalleryPage({
     albumName: string;
   };
 }) {
-  const results = (await cloudinary.v2.search
+  const results = (await cloudinary.search
     .expression(`resource_type:image AND folder = ${albumName}`)
     .sort_by("created_at", "desc")
     .with_field("tags")

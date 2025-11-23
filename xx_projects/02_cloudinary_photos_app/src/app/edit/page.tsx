@@ -8,13 +8,14 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-dropdown-menu";
 
-export default function EditPage({
-  searchParams: { publicId },
+export default async function EditPage({
+  searchParams,
 }: {
-  searchParams: {
+  searchParams: Promise<{
     publicId: string;
-  };
+  }>;
 }) {
+  const { publicId } = await searchParams;
   const [transformation, setTransformation] = useState<
     undefined | "generative-fill" | "blur" | "grayscale" | "pixelate" | "bg-remove"
   >();

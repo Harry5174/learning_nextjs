@@ -4,42 +4,39 @@ import { CldUploadButton } from "next-cloudinary";
 import { uploadResult } from "../page";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { Upload, Plus } from "lucide-react";
+import { useState } from "react";
 
 export default function UploadButton() {
   const router = useRouter();
+  const [isUploading, setIsUploading] = useState(false);
 
   return (
-    <Button
-      asChild
-      className="custom-button dark:bg-black dark:text-white rounded-xl"
+    <CldUploadButton 
+      className="group relative inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+      onUpload={(result: uploadResult | any) => {
+        setIsUploading(true);
+        setTimeout(() => {
+          console.log("refresh");
+          router.refresh();
+          setIsUploading(false);
+        }, 1000);
+      }}
+      uploadPreset="uorsbb9n"
+      disabled={isUploading}
     >
-      <div className="">
-        <CldUploadButton className="flex gap-2 items-center"
-          onUpload={(result: uploadResult | any) => {
-            setTimeout(()=>{
-              console.log("refresh");
-              router.refresh();
-            },1000)
-          }}
-          uploadPreset="uorsbb9n"
-        >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="w-6 h-6"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
-          />
-        </svg>        
-          Upload
-       </CldUploadButton> 
-      </div>
-    </Button>
+      {isUploading ? (
+        <>
+          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+          Uploading...
+        </>
+      ) : (
+        <>
+          <Upload className="h-4 w-4 mr-2 group-hover:rotate-12 transition-transform duration-300" />
+          Upload Photos
+          <Plus className="h-3 w-3 ml-1 group-hover:rotate-90 transition-transform duration-300" />
+        </>
+      )}
+    </CldUploadButton>
   );
 }

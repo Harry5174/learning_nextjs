@@ -1,10 +1,10 @@
-import cloudinary from "cloudinary";
+import cloudinary from "@/lib/cloudinary";
 import { SearchResult } from "../gallery/page";
 import { ForceRefresh } from "@/components/force-refresh";
 import FavoritesList from "./favorites-list";
 
 export default async function FavoritesPage() {
-  const results = (await cloudinary.v2.search
+  const results = (await cloudinary.search
     .expression("resource_type:image AND tags = favourite")
     .sort_by("created_at", "desc")
     .with_field("tags")

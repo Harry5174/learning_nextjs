@@ -5,10 +5,11 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Heart } from "@/components/icons/heart";
 import Link from "next/link";
-import cloudinary from "cloudinary";
+import cloudinary from "@/lib/cloudinary";
 import { Folder } from "./albums/page";
 import Image from "next/image";
-import APhotoAlbum from "/public/APhotoAlbum.png"
+import APhotoAlbum from "/public/APhotoAlbum.png";
+import { ToastProvider } from "@/components/toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,38 +19,40 @@ export const metadata: Metadata = {
 };
 
 async function SideMenu() {
-  const { folders } = (await cloudinary.v2.api.root_folders()) as {
+  const { folders } = (await cloudinary.api.root_folders()) as {
     folders: Folder[];
   };
 
   return (
-    <div className="pb-12">
-      <div className="space-y-4 py-4">
-        <div className="px-3 py-2">
-          <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
+    <div className="w-64 bg-white/50 dark:bg-slate-900/50 backdrop-blur-md border-r border-slate-200 dark:border-slate-700 min-h-screen">
+      <div className="space-y-6 py-6">
+        <div className="px-4">
+          <h2 className="mb-4 px-3 text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
             Manage
           </h2>
-          <div className="space-y-1">
+          <div className="space-y-2">
             <Button
               asChild
               variant="ghost"
-              className="w-full justify-start flex gap-2 rounded-xl hover:bg-gray-300"
+              className="w-full justify-start flex gap-3 rounded-xl hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-200 group"
             >
-              <Link href="../gallery">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-6 h-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
-                  />
-                </svg>
+              <Link href="../gallery" className="flex items-center gap-3">
+                <div className="p-1.5 bg-blue-100 dark:bg-blue-900 rounded-lg group-hover:scale-110 transition-transform duration-200">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={2}
+                    stroke="currentColor"
+                    className="w-4 h-4 text-blue-600 dark:text-blue-400"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
+                    />
+                  </svg>
+                </div>
                 Gallery
               </Link>
             </Button>
@@ -57,23 +60,25 @@ async function SideMenu() {
             <Button
               asChild
               variant="ghost"
-              className="w-full justify-start flex gap-2 rounded-xl hover:bg-gray-300"
+              className="w-full justify-start flex gap-3 rounded-xl hover:bg-purple-50 dark:hover:bg-purple-900/20 hover:text-purple-600 dark:hover:text-purple-400 transition-all duration-200 group"
             >
-              <Link href="/albums">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-6 h-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z"
-                  />
-                </svg>
+              <Link href="/albums" className="flex items-center gap-3">
+                <div className="p-1.5 bg-purple-100 dark:bg-purple-900 rounded-lg group-hover:scale-110 transition-transform duration-200">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={2}
+                    stroke="currentColor"
+                    className="w-4 h-4 text-purple-600 dark:text-purple-400"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z"
+                    />
+                  </svg>
+                </div>
                 Albums
               </Link>
             </Button>
@@ -83,19 +88,24 @@ async function SideMenu() {
                 asChild
                 key={folder.name}
                 variant="ghost"
-                className="ml-4 w-full justify-start flex gap-2 rounded-xl hover:bg-gray-300"
+                className="ml-6 w-full justify-start flex gap-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-300 transition-all duration-200 text-sm"
               >
-                <Link href={`/albums/${folder.path}`}>{folder.name}</Link>
+                <Link href={`/albums/${folder.path}`} className="flex items-center gap-3">
+                  <div className="w-2 h-2 bg-slate-400 dark:bg-slate-500 rounded-full"></div>
+                  {folder.name}
+                </Link>
               </Button>
             ))}
 
             <Button
               asChild
               variant="ghost"
-              className="w-full justify-start flex gap-2 rounded-xl hover:bg-gray-300"
+              className="w-full justify-start flex gap-3 rounded-xl hover:bg-pink-50 dark:hover:bg-pink-900/20 hover:text-pink-600 dark:hover:text-pink-400 transition-all duration-200 group"
             >
-              <Link href="/favorites">
-                <Heart />
+              <Link href="/favorites" className="flex items-center gap-3">
+                <div className="p-1.5 bg-pink-100 dark:bg-pink-900 rounded-lg group-hover:scale-110 transition-transform duration-200">
+                  <Heart className="w-4 h-4 text-pink-600 dark:text-pink-400" />
+                </div>
                 Favourites
               </Link>
             </Button>
@@ -114,36 +124,43 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={inter.className}>
+        <ToastProvider>
         {/* navigationBar */}
-        <div className="border-b">
+        <div className="border-b bg-white/80 dark:bg-slate-900/80 backdrop-blur-md sticky top-0 z-50">
           <div className="flex h-16 items-center px-4 container mx-auto">
-            <div className="flex items-center justify-center gap-2">
-            <Image 
-              src={APhotoAlbum}
-              width={40}
-              height={40} alt={"album logo"}/>
-             <Button variant="ghost" className="cursor-pointer"> 
-            <Link href={`/`}>
-            PHOTOS APP
-            </Link>
-            </Button>
+            <div className="flex items-center justify-center gap-3">
+              <div className="p-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg">
+                <Image 
+                  src={APhotoAlbum}
+                  width={32}
+                  height={32} 
+                  alt={"album logo"}
+                  className="filter brightness-0 invert"
+                />
+              </div>
+              <Button variant="ghost" className="cursor-pointer text-lg font-bold hover:bg-transparent"> 
+                <Link href={`/`} className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  Cloudinary Photos
+                </Link>
+              </Button>
             </div>
             <div className="ml-auto flex items-center space-x-4">
-              <Avatar>
+              <Avatar className="ring-2 ring-blue-200 dark:ring-blue-800">
                 <AvatarImage
                   src="https://github.com/shadcn.png"
                   alt="@shadcn"
                 />
-                <AvatarFallback>CN</AvatarFallback>
+                <AvatarFallback className="bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold">CN</AvatarFallback>
               </Avatar>
             </div>
           </div>
         </div>
 
-        <div className="flex">
+        <div className="flex min-h-screen">
           <SideMenu />
-          <div className="w-full px-4 pt-8">{children}</div>
+          <div className="flex-1">{children}</div>
         </div>
+        </ToastProvider>
       </body>
     </html>
   );
