@@ -8,21 +8,29 @@ export default async function AlbumsPage() {
     folders: Folder[];
   };
   return (
-    <>
-      <section>
-        <div className="flex flex-col gap-8">
-          <div className="flex justify-between">
-            <h1 className="text-4xl font-bold">Albums</h1>
+    <div className="min-h-screen bg-black text-white p-8">
+      <div className="container mx-auto max-w-7xl">
+        <section>
+          <div className="flex flex-col gap-8">
+            <div className="flex justify-between items-center border-b border-zinc-900 pb-6">
+              <h1 className="text-2xl font-light tracking-wide text-white">Albums</h1>
+            </div>
+
+            {folders.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                {folders.map((folder) => (
+                  <AlbumCard
+                    key={folder.path}
+                    folder={folder}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="text-zinc-500 text-sm">No albums found.</div>
+            )}
           </div>
-        <div className="grid grid-cols-3 gap-4">
-          {folders.map((folder) => (
-            <AlbumCard
-            key={folder.path}
-            folder={folder}/>
-          ))}
-          </div>
-        </div>
-      </section>
-    </>
+        </section>
+      </div>
+    </div>
   );
 }

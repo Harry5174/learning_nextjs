@@ -4,12 +4,13 @@ import { SearchResult } from "@/app/gallery/page";
 import { ForceRefresh } from "@/components/force-refresh";
 
 export default async function GalleryPage({
-  params: { albumName },
+  params,
 }: {
-  params: {
+  params: Promise<{
     albumName: string;
-  };
+  }>;
 }) {
+  const { albumName } = await params;
   const results = (await cloudinary.search
     .expression(`resource_type:image AND folder = ${albumName}`)
     .sort_by("created_at", "desc")
@@ -20,7 +21,7 @@ export default async function GalleryPage({
   return (
     <>
       <section>
-        <ForceRefresh/>
+        <ForceRefresh />
         <div className="flex flex-col gap-8">
           <div className="flex justify-between">
             <h1 className="text-4xl font-bold"> Album {albumName}</h1>

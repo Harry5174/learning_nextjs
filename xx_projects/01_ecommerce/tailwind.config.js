@@ -6,7 +6,7 @@ module.exports = {
     './components/**/*.{ts,tsx,jsx}',
     './app/**/*.{ts,tsx,jsx}',
     './src/**/*.{ts,tsx,jsx}',
-	],
+  ],
   theme: {
     container: {
       center: true,
@@ -50,6 +50,11 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // Premium Theme Colors
+        'premium-black': '#0a0a0a',
+        'premium-gray': '#2a2a2a',
+        'premium-light-gray': '#f4f4f5',
+        'premium-accent': '#3b82f6', // A nice vibrant blue for call to actions
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -73,5 +78,4 @@ module.exports = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-  plugins: [require("daisyui")],
 }

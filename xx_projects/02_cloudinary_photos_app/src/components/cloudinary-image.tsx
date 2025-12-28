@@ -13,6 +13,7 @@ import { Eye } from "lucide-react";
 import { useToast } from "./toast";
 import { Button } from "@/components/ui/button";
 
+
 export function CloudinaryImage(
   props: {
     imageData: SearchResult;
@@ -31,34 +32,32 @@ export function CloudinaryImage(
   );
 
   return (
-    <Card 
-      className="group relative overflow-hidden bg-white dark:bg-slate-800 shadow-md hover:shadow-xl transition-all duration-300 border-0"
+    <div
+      className="group relative overflow-hidden rounded-md bg-zinc-900"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <div className="relative overflow-hidden">
-        <CldImage 
-          {...props} 
+        <CldImage
+          {...props}
           src={imageData.public_id}
-          className="w-full h-auto transition-transform duration-300 group-hover:scale-105 cursor-pointer"
+          className="w-full h-auto transition-all duration-500 group-hover:scale-105 group-hover:grayscale-0 grayscale cursor-pointer"
           onClick={() => {
             setIsModalOpen(true);
             onImageClick?.(imageData);
           }}
         />
-        
+
         {/* Overlay */}
-        <div className={`absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 ${
-          isHovered ? 'bg-black/20' : ''
-        }`} />
-        
+        <div className={`absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'
+          }`} />
+
         {/* Heart Button */}
-        <div className={`absolute top-3 left-3 transition-all duration-300 ${
-          isHovered ? 'opacity-100 scale-100' : 'opacity-80 scale-95'
-        }`}>
+        <div className={`absolute top-3 left-3 transition-all duration-300 ${isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
+          }`}>
           {isFavourited ? (
             <FullHeart
-              className="text-red-500 cursor-pointer hover:text-red-400 transition-colors duration-200 drop-shadow-lg"
+              className="text-white cursor-pointer hover:text-zinc-200 transition-colors duration-200"
               onClick={(e) => {
                 e.stopPropagation();
                 onUnheart?.(imageData);
@@ -75,7 +74,7 @@ export function CloudinaryImage(
             />
           ) : (
             <Heart
-              className="text-white cursor-pointer hover:text-red-400 transition-colors duration-200 drop-shadow-lg"
+              className="text-white cursor-pointer hover:text-zinc-200 transition-colors duration-200"
               onClick={(e) => {
                 e.stopPropagation();
                 SetIsFavourited(true);
@@ -91,37 +90,35 @@ export function CloudinaryImage(
             />
           )}
         </div>
-        
+
         {/* Menu Button */}
-        <div className={`absolute top-3 right-3 transition-all duration-300 ${
-          isHovered ? 'opacity-100 scale-100' : 'opacity-80 scale-95'
-        }`}>
+        <div className={`absolute top-3 right-3 transition-all duration-300 ${isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
+          }`}>
           <ImageMenu image={imageData} />
         </div>
 
         {/* View Button */}
-        <div className={`absolute bottom-3 left-3 transition-all duration-300 ${
-          isHovered ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
-        }`}>
+        <div className={`absolute bottom-3 right-3 transition-all duration-300 ${isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
+          }`}>
           <Button
             size="sm"
             variant="secondary"
-            className="bg-white/90 hover:bg-white text-slate-800 shadow-lg"
+            className="bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white border-0 h-8"
             onClick={(e) => {
               e.stopPropagation();
               setIsModalOpen(true);
               onImageClick?.(imageData);
             }}
           >
-            <Eye className="h-4 w-4 mr-1" />
+            <Eye className="h-3 w-3 mr-2" />
             View
           </Button>
         </div>
-        
+
         {/* Loading State */}
         {transition && (
-          <div className="absolute inset-0 bg-white/50 dark:bg-black/50 flex items-center justify-center">
-            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+          <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
           </div>
         )}
       </div>
@@ -132,6 +129,6 @@ export function CloudinaryImage(
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       />
-    </Card>
+    </div>
   );
 }

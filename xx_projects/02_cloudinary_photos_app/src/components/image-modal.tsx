@@ -21,14 +21,14 @@ interface ImageModalProps {
   hasNext?: boolean;
 }
 
-export function ImageModal({ 
-  image, 
-  isOpen, 
-  onClose, 
-  onPrevious, 
-  onNext, 
-  hasPrevious = false, 
-  hasNext = false 
+export function ImageModal({
+  image,
+  isOpen,
+  onClose,
+  onPrevious,
+  onNext,
+  hasPrevious = false,
+  hasNext = false
 }: ImageModalProps) {
   const [zoom, setZoom] = useState(1);
   const [rotation, setRotation] = useState(0);
@@ -46,7 +46,7 @@ export function ImageModal({
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!isOpen) return;
-      
+
       switch (e.key) {
         case 'Escape':
           onClose();
@@ -141,7 +141,7 @@ export function ImageModal({
               <ChevronLeft className="h-6 w-6" />
             </Button>
           )}
-          
+
           {hasNext && (
             <Button
               variant="ghost"
@@ -155,7 +155,7 @@ export function ImageModal({
 
           {/* Image Container */}
           <div className="flex-1 flex items-center justify-center p-8 pt-16 pb-20">
-            <div 
+            <div
               className="relative max-w-full max-h-full transition-transform duration-200 ease-out"
               style={{
                 transform: `scale(${zoom}) rotate(${rotation}deg)`,
@@ -168,7 +168,7 @@ export function ImageModal({
                 alt="Full size image"
                 className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
                 quality="auto"
-                fetchFormat="auto"
+                format="auto"
               />
             </div>
           </div>
@@ -191,7 +191,7 @@ export function ImageModal({
                     <Heart className="h-5 w-5" />
                   )}
                 </Button>
-                
+
                 <Button
                   variant="ghost"
                   size="sm"
@@ -200,7 +200,7 @@ export function ImageModal({
                 >
                   <Download className="h-5 w-5" />
                 </Button>
-                
+
                 <Button
                   variant="ghost"
                   size="sm"
@@ -221,11 +221,11 @@ export function ImageModal({
                 >
                   <ZoomOut className="h-5 w-5" />
                 </Button>
-                
+
                 <span className="text-white text-sm px-2">
                   {Math.round(zoom * 100)}%
                 </span>
-                
+
                 <Button
                   variant="ghost"
                   size="sm"
@@ -234,7 +234,7 @@ export function ImageModal({
                 >
                   <ZoomIn className="h-5 w-5" />
                 </Button>
-                
+
                 <Button
                   variant="ghost"
                   size="sm"

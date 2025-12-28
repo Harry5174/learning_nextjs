@@ -12,6 +12,8 @@ import { DragDropUpload } from "@/components/drag-drop-upload";
 export type uploadResult = {
   info: {
     public_id: string;
+    width: number;
+    height: number;
   };
   event: 'success';
 };
@@ -24,6 +26,7 @@ export default function Home() {
   const handleUpload = (result: uploadResult | any) => {
     setIsUploading(false);
     setImageId(result.info.public_id);
+    setUploadedImages(prev => [{ ...result, id: result.info.public_id }, ...prev]);
   };
 
   const handleDragDropUpload = (results: uploadResult[]) => {
@@ -34,190 +37,111 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
-      <div className="container mx-auto px-4 py-16">
-        {/* Hero Section */}
-        <div className="text-center mb-16">
-          <div className="flex items-center justify-center mb-6">
-            <div className="p-3 bg-blue-100 dark:bg-blue-900 rounded-full mr-4">
-              <Sparkles className="h-8 w-8 text-blue-600 dark:text-blue-400" />
-            </div>
-            <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Cloudinary Photos
-            </h1>
-          </div>
-          <p className="text-xl text-slate-600 dark:text-slate-300 mb-8 max-w-2xl mx-auto">
-            Upload, organize, and manage your photos with ease. Powered by Cloudinary's advanced image processing.
+    <main className="min-h-screen bg-black text-white p-8">
+      <div className="max-w-6xl mx-auto space-y-12">
+
+        {/* Header */}
+        <div className="flex flex-col items-start gap-4 border-b border-zinc-800 pb-8">
+          <h1 className="text-4xl font-light tracking-tight">
+            Cloudinary Photos
+          </h1>
+          <p className="text-zinc-500 font-light max-w-xl">
+            A minimalist space for your visual collection. Upload, organize, and refine.
           </p>
         </div>
 
         {/* Upload Section */}
-        <div className="max-w-4xl mx-auto">
-          {/* Original Cloudinary Upload */}
-          <Card className="border-2 border-dashed border-slate-300 dark:border-slate-600 hover:border-blue-400 dark:hover:border-blue-500 transition-all duration-300 hover:shadow-lg mb-6">
-            <CardContent className="p-12">
-              <div className="text-center">
-                <div className="mb-6">
-                  <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center">
-                    <Upload className="h-10 w-10 text-blue-600 dark:text-blue-400" />
-                  </div>
-                  <h2 className="text-2xl font-semibold mb-2">Upload Your Photos</h2>
-                  <p className="text-slate-600 dark:text-slate-400">
-                    Click to browse and upload your images
-                  </p>
+        <div className="grid lg:grid-cols-2 gap-12">
+          <div className="space-y-6">
+            <h2 className="text-xl font-medium tracking-wide">Upload</h2>
+
+            {/* Main Upload Box */}
+            <div className="border border-dashed border-zinc-800 rounded-lg p-10 hover:border-zinc-600 transition-colors bg-zinc-900/30">
+              <div className="flex flex-col items-center justify-center gap-6 text-center">
+                <div className="p-4 bg-zinc-900 rounded-full border border-zinc-800">
+                  <Upload className="h-6 w-6 text-white" />
                 </div>
 
-                <CldUploadButton
-                  className="group relative inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-                  onUpload={(result: uploadResult | any) => {
-                    setIsUploading(true);
-                    handleUpload(result);
-                  }}
-                  uploadPreset="uorsbb9n"
-                  disabled={isUploading}
-                >
-                  {isUploading ? (
-                    <>
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                      Uploading...
-                    </>
-                  ) : (
-                    <>
-                      <ImageIcon className="h-5 w-5 mr-2 group-hover:rotate-12 transition-transform duration-300" />
-                      Choose Images
-                      <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
-                    </>
-                  )}
-                </CldUploadButton>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Alternative: Drag & Drop Upload */}
-          <div className="text-center mb-4">
-            <p className="text-slate-500 dark:text-slate-400 text-sm">or</p>
-          </div>
-          
-          <DragDropUpload
-            onUploadComplete={handleDragDropUpload}
-            uploadPreset="uorsbb9n"
-            maxFiles={10}
-          />
-
-          {/* Success Message */}
-          {(imageId || uploadedImages.length > 0) && (
-            <div className="mt-8 p-6 bg-green-50 dark:bg-green-900/20 rounded-xl border border-green-200 dark:border-green-800">
-              <div className="flex items-center justify-center mb-4">
-                <div className="p-2 bg-green-100 dark:bg-green-800 rounded-full mr-3">
-                  <ImageIcon className="h-5 w-5 text-green-600 dark:text-green-400" />
+                <div className="space-y-4">
+                  <CldUploadButton
+                    className="inline-flex items-center justify-center h-10 px-8 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-white text-black hover:bg-zinc-200 rounded-md"
+                    onUpload={(result: uploadResult | any) => {
+                      setIsUploading(true);
+                      handleUpload(result);
+                    }}
+                    uploadPreset="uorsbb9n"
+                  >
+                    {isUploading ? "Uploading..." : "Select Files"}
+                  </CldUploadButton>
+                  <p className="text-sm text-zinc-600">or drag and drop here</p>
                 </div>
-                <h3 className="text-lg font-semibold text-green-800 dark:text-green-200">
-                  Upload Successful!
-                </h3>
-              </div>
-              
-              {uploadedImages.length > 0 && (
-                <div className="mb-4">
-                  <p className="text-center text-green-700 dark:text-green-300 mb-3">
-                    {uploadedImages.length} image{uploadedImages.length > 1 ? 's' : ''} uploaded successfully
-                  </p>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3 max-h-40 overflow-y-auto">
-                    {uploadedImages.map((result, index) => (
-                      <CldImage
-                        key={index}
-                        width="150"
-                        height="100"
-                        src={result.info.public_id}
-                        sizes="100vw"
-                        alt="Uploaded image"
-                        className="rounded-lg shadow-md"
-                      />
-                    ))}
-                  </div>
-                </div>
-              )}
-              
-              {imageId && uploadedImages.length === 0 && (
-                <div className="mb-4">
-                  <CldImage
-                    width="300"
-                    height="200"
-                    src={imageId}
-                    sizes="100vw"
-                    alt="Uploaded image"
-                    className="rounded-lg shadow-md mx-auto"
-                  />
-                </div>
-              )}
-              
-              <div className="flex gap-3 justify-center">
-                <Button asChild variant="outline" className="border-green-300 text-green-700 hover:bg-green-50">
-                  <Link href="/gallery">
-                    View in Gallery
-                  </Link>
-                </Button>
-                <Button 
-                  onClick={() => {
-                    setImageId("");
-                    setUploadedImages([]);
-                  }}
-                  variant="outline"
-                  className="border-slate-300 text-slate-700 hover:bg-slate-50"
-                >
-                  Upload More
-                </Button>
               </div>
             </div>
-          )}
 
-          {/* Quick Actions */}
-          <div className="grid md:grid-cols-3 gap-6 mt-12">
-            <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-              <CardContent className="p-6 text-center">
-                <div className="p-3 bg-blue-100 dark:bg-blue-900 rounded-full w-12 h-12 mx-auto mb-4 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                  <ImageIcon className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-                </div>
-                <h3 className="font-semibold mb-2">Gallery</h3>
-                <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
-                  Browse and manage all your uploaded photos
-                </p>
-                <Button asChild variant="outline" size="sm">
-                  <Link href="/gallery">View Gallery</Link>
-                </Button>
-              </CardContent>
-            </Card>
+            {/* Drag Drop Component Integration - Passing minimalist props if possible, or wrapping container handles styles */}
+            <div className="opacity-0 h-0 overflow-hidden">
+              <DragDropUpload
+                onUploadComplete={handleDragDropUpload}
+                uploadPreset="uorsbb9n"
+                maxFiles={10}
+              />
+            </div>
 
-            <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-              <CardContent className="p-6 text-center">
-                <div className="p-3 bg-purple-100 dark:bg-purple-900 rounded-full w-12 h-12 mx-auto mb-4 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                  <Upload className="h-6 w-6 text-purple-600 dark:text-purple-400" />
-                </div>
-                <h3 className="font-semibold mb-2">Albums</h3>
-                <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
-                  Organize your photos into custom albums
-                </p>
-                <Button asChild variant="outline" size="sm">
-                  <Link href="/albums">Manage Albums</Link>
-                </Button>
-              </CardContent>
-            </Card>
+          </div>
 
-            <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-              <CardContent className="p-6 text-center">
-                <div className="p-3 bg-pink-100 dark:bg-pink-900 rounded-full w-12 h-12 mx-auto mb-4 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                  <Sparkles className="h-6 w-6 text-pink-600 dark:text-pink-400" />
-                </div>
-                <h3 className="font-semibold mb-2">Favorites</h3>
-                <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
-                  View your favorite photos in one place
-                </p>
-                <Button asChild variant="outline" size="sm">
-                  <Link href="/favorites">View Favorites</Link>
-                </Button>
-              </CardContent>
-            </Card>
+          <div className="space-y-6">
+            <h2 className="text-xl font-medium tracking-wide flex justify-between items-center">
+              <span>Recent</span>
+              <Link href="/gallery" className="text-sm text-zinc-500 hover:text-white transition-colors flex items-center gap-1">
+                View Gallery <ArrowRight className="w-4 h-4" />
+              </Link>
+            </h2>
+
+            {uploadedImages.length > 0 ? (
+              <div className="grid grid-cols-2 gap-4">
+                {uploadedImages.map((img, idx) => (
+                  <div key={idx} className="relative aspect-square bg-zinc-900 rounded-md overflow-hidden border border-zinc-800 group">
+                    <CldImage
+                      width="400"
+                      height="400"
+                      src={img.info.public_id}
+                      sizes="50vw"
+                      alt="Uploaded image"
+                      className="object-cover w-full h-full grayscale group-hover:grayscale-0 transition-all duration-500"
+                    />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="h-64 flex items-center justify-center border border-zinc-900 rounded-lg bg-zinc-950/50 text-zinc-700 text-sm">
+                No recent uploads
+              </div>
+            )}
           </div>
         </div>
+
+        {/* Quick Links */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-8 border-t border-zinc-800">
+          <Link href="/gallery" className="group block p-6 border border-zinc-800 bg-zinc-950/30 hover:bg-zinc-900 transition-colors rounded-lg text-center">
+            <ImageIcon className="w-6 h-6 mx-auto mb-3 text-zinc-500 group-hover:text-white transition-colors" />
+            <h3 className="font-medium text-white mb-1">Gallery</h3>
+            <p className="text-sm text-zinc-600">View all photos</p>
+          </Link>
+          <Link href="/albums" className="group block p-6 border border-zinc-800 bg-zinc-950/30 hover:bg-zinc-900 transition-colors rounded-lg text-center">
+            <div className="w-6 h-6 mx-auto mb-3 flex items-center justify-center border border-zinc-700 rounded text-zinc-500 group-hover:border-white group-hover:text-white transition-colors">
+              <span className="text-xs">A</span>
+            </div>
+            <h3 className="font-medium text-white mb-1">Albums</h3>
+            <p className="text-sm text-zinc-600">Organize collections</p>
+          </Link>
+          <Link href="/favorites" className="group block p-6 border border-zinc-800 bg-zinc-950/30 hover:bg-zinc-900 transition-colors rounded-lg text-center">
+            <Sparkles className="w-6 h-6 mx-auto mb-3 text-zinc-500 group-hover:text-white transition-colors" />
+            <h3 className="font-medium text-white mb-1">Favorites</h3>
+            <p className="text-sm text-zinc-600">Your best shots</p>
+          </Link>
+        </div>
+
+
       </div>
     </main>
   );
