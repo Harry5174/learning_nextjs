@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, Plus, Minus } from "lucide-react";
 import { useState } from "react";
+import { useCart } from "@/lib/CartContext";
 
 const getProductsDetail = (id: number | string) => {
   return Products.filter((product) => product.id == id);
@@ -13,6 +14,8 @@ export default function Page({ params }: { params: { id: string } }) {
   const result = getProductsDetail(params.id);
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState("M");
+  const [isAdding, setIsAdding] = useState(false);
+  const { addItem } = useCart();
 
   const increment = () => setQuantity(q => q + 1);
   const decrement = () => setQuantity(q => (q > 1 ? q - 1 : 1));
@@ -22,6 +25,21 @@ export default function Page({ params }: { params: { id: string } }) {
   }
 
   const product = result[0];
+
+  const handleAddToCart = () => {
+    setIsAdding(true);
+    addItem({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      quantity: quantity,
+      size: selectedSize
+    });
+
+    // Reset visual feedback after a delay
+    setTimeout(() => setIsAdding(false), 1000);
+  };
 
   return (
     <div className="container mx-auto px-4 py-10 lg:py-20">
@@ -80,8 +98,15 @@ export default function Page({ params }: { params: { id: string } }) {
           </div>
 
           <div className="flex items-center gap-6 pt-6 border-t border-gray-100">
-            <Button className="bg-premium-black hover:bg-gray-800 text-white h-14 px-8 text-lg rounded-none shadow-xl hover:shadow-2xl transition-all duration-300 flex-1 lg:flex-none lg:w-48">
-              <ShoppingCart className="mr-2 h-5 w-5" /> Add to Cart
+            <Button
+              onClick={handleAddToCart}
+              disabled={isAdding}
+              className={`h-14 px-8 text-lg rounded-none shadow-xl transition-all duration-300 flex-1 lg:flex-none lg:w-48
+                    ${isAdding ? 'bg-green-600 hover:bg-green-700' : 'bg-premium-black hover:bg-gray-800'} text-white
+                `}
+            >
+              <ShoppingCart className="mr-2 h-5 w-5" />
+              {isAdding ? "Added!" : "Add to Cart"}
             </Button>
             <div className="text-3xl font-bold tracking-tight text-premium-black">
               ${product.price.toFixed(2)}
