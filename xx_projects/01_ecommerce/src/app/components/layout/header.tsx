@@ -39,14 +39,16 @@ export function NavigationMenuDemo() {
             />
           </div>
 
-          <div className="relative p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors cursor-pointer group">
-            <ShoppingCart className="w-5 h-5 text-gray-700 group-hover:scale-110 transition-transform" />
-            {cartCount > 0 && (
-              <Badge className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full p-0 border-2 border-white">
-                {cartCount}
-              </Badge>
-            )}
-          </div>
+          <Link href="/checkout">
+            <div className="relative p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors cursor-pointer group">
+              <ShoppingCart className="w-5 h-5 text-gray-700 group-hover:scale-110 transition-transform" />
+              {cartCount > 0 && (
+                <Badge className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full p-0 border-2 border-white">
+                  {cartCount}
+                </Badge>
+              )}
+            </div>
+          </Link>
         </div>
 
         {/* Mobile Menu Button */}
@@ -80,14 +82,16 @@ export function NavigationMenuDemo() {
 
           {/* Mobile Cart Button */}
           <div className="flex justify-center mt-2">
-            <div className="relative p-3 bg-gray-100 rounded-full hover:bg-gray-200 w-fit">
-              <ShoppingCart className="w-6 h-6 text-gray-700" />
-              {cartCount > 0 && (
-                <Badge className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full p-0 border-2 border-white">
-                  {cartCount}
-                </Badge>
-              )}
-            </div>
+            <Link href="/checkout" onClick={() => setIsMenuOpen(false)}>
+              <div className="relative p-3 bg-gray-100 rounded-full hover:bg-gray-200 w-fit">
+                <ShoppingCart className="w-6 h-6 text-gray-700" />
+                {cartCount > 0 && (
+                  <Badge className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full p-0 border-2 border-white">
+                    {cartCount}
+                  </Badge>
+                )}
+              </div>
+            </Link>
           </div>
 
           <div className="flex flex-col gap-2 mt-2">
