@@ -6,9 +6,11 @@ import logo from "/public/logo.png";
 import { Search, ShoppingCart, Menu, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { useCart } from "@/lib/CartContext";
 
 export function NavigationMenuDemo() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { cartCount } = useCart();
 
   return (
     <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
@@ -39,9 +41,11 @@ export function NavigationMenuDemo() {
 
           <div className="relative p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors cursor-pointer group">
             <ShoppingCart className="w-5 h-5 text-gray-700 group-hover:scale-110 transition-transform" />
-            <Badge className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full p-0 border-2 border-white">
-              0
-            </Badge>
+            {cartCount > 0 && (
+              <Badge className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full p-0 border-2 border-white">
+                {cartCount}
+              </Badge>
+            )}
           </div>
         </div>
 

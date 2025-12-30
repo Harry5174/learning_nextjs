@@ -20,8 +20,8 @@ export const Carousel = () => {
       </span>
       <Swiper
         className="mt-4"
-        spaceBetween={50}
-        slidesPerView={2}
+        spaceBetween={30}
+        slidesPerView={3}
         onSlideChange={() => console.log("slide change")}
         onSwiper={(swiper) => console.log(swiper)}
       >
